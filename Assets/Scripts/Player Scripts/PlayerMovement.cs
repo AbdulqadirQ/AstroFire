@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-	public float shipSpeed = 5f;
+	public float shipAcceleration = 0.1f;
 	public float rotationSpeed = 300f;
 	private Rigidbody2D rigidBody;
 
 	void Awake(){
-		rigidBody = GetComponent<Rigidbody2D>();
+		rigidBody = gameObject.GetComponent<Rigidbody2D>();
+		rigidBody.gravityScale = 0.0f;
 	}
 
 	void Start () {
@@ -18,6 +19,24 @@ public class PlayerMovement : MonoBehaviour {
 	
 	void Update () {
 		ShipTurn();
+		ShipMove();
+	}
+
+	void ShipMove(){
+		// ALTERNATIVE:
+		// float v = Input.GetAxis("Vertical");
+		// if(v>0){
+		// 	// transform.Translate(Vector3.up * shipAcceleration * Time.smoothDeltaTime * v);
+		// 	GetComponent<Rigidbody2D>().AddForce(transform.right * shipAcceleration);
+		// }
+
+		// FIXME: There's no limit to acceleration - ship can continuously speed up
+		if(Input.GetKey(KeyCode.W)){
+			rigidBody.AddForce(
+					transform.up * shipAcceleration, ForceMode2D.Impulse);			
+		}
+
+
 	}
 
 	void ShipTurn(){
