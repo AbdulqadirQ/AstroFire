@@ -39,6 +39,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	}
 
+	// FIXME: why does the ship start turning clockwise like nuts when
+	// hit by an astroid??
 	void ShipTurn(){
 
 		Quaternion rotation = transform.rotation;
