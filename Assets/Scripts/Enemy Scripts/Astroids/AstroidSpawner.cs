@@ -5,21 +5,46 @@ using UnityEngine;
 public class AstroidSpawner : MonoBehaviour {
 
 	public GameObject astroid;
-	private Transform spawn;
-
+	private Vector3 magnitude;
 
 	void Start () {
+		SpawnAstroid();
+		SpawnAstroid();
+		SpawnAstroid();
 
-	// FIXME: make spawner universal for more astroids
+	}
+
+	// FIXME: Location nor magnitude seem randomised..
+	void SpawnAstroid(){
 		Vector3 spawn_location = transform.position;
-		spawn_location[0] = -9;
-		spawn_location[1] = 6;
-		spawn_location[2] = 0;
+		spawn_location = RandomiseSpawnLocations(spawn_location);
 
 		GameObject spawned_astroid = Instantiate(
 			astroid, spawn_location, Quaternion.identity);
 		spawned_astroid.GetComponent<Rigidbody2D>().AddForce(
-					new Vector2(Random.Range(100f, 1000f), Random.Range(50f, 400f)));
+					RandomiseMagnitude());
+	}
+
+	Vector2 RandomiseMagnitude(){
+
+		int[] positive_and_negative = {Random.Range(-5000, -10000), 
+			Random.Range(5000, 10000)};
+
+		int magnitude = positive_and_negative[Random.Range(0,1)];
+
+		return new Vector2(magnitude, magnitude);
+	}
+
+	Vector3 RandomiseSpawnLocations(Vector3 spawn_location){
+		int[] x_positions = {-9,9};
+		int x_position = x_positions[Random.Range(1,2)];
+		int y_position = Random.Range(-6,6);
+		
+		spawn_location[0] = x_position;
+		spawn_location[1] = y_position;
+		spawn_location[2] = 0;
+
+		return spawn_location;
 	}
 	
 	void Update () {
